@@ -39,9 +39,15 @@ public class DummyPlayers extends JavaPlugin implements Listener {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String commandLabel, String[] args) {
+        String prefix = (ChatColor.DARK_GRAY + "["+ChatColor.GREEN+"DummyPlayers"+ChatColor.DARK_GRAY + "] " + ChatColor.GRAY);
         if(commandLabel.equalsIgnoreCase("dplayers")){
             if(args.length == 0){
-                sender.sendMessage(ChatColor.DARK_GRAY + "["+ChatColor.GREEN+"DummyPlayers"+ChatColor.DARK_GRAY);
+                sender.sendMessage(prefix+":");
+                sender.sendMessage(ChatColor.GREEN+"/dplayers spawn [name] [amount] [location] "+ChatColor.GRAY+"- Spawn dummy players. Words enclosed in [] are optional");
+                sender.sendMessage(ChatColor.GREEN+"/dplayers kill <all|name> "+ChatColor.GRAY+"- Kill all dummy players or a specific one.");
+                sender.sendMessage(ChatColor.GREEN+"/dplayers setSkin <all|name> <skin> "+ChatColor.GRAY+"- Set the skin of all dummy players or a specified one");
+                sender.sendMessage(ChatColor.GREEN+"/dplayers command <all|name> <command> "+ChatColor.GRAY+"- Execute a command as a dummy player.");
+                sender.sendMessage(ChatColor.GREEN+"/dplayers chat <all|name> <chat> "+ChatColor.GRAY+"- Chat as a dummy player");
             }
         }
 
