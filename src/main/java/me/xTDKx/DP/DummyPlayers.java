@@ -1,14 +1,14 @@
 package me.xTDKx.DP;
 
-import net.minecraft.server.v1_7_R2.EntityPlayer;
-import net.minecraft.server.v1_7_R2.PlayerInteractManager;
-import net.minecraft.server.v1_7_R2.PlayerList;
-import net.minecraft.server.v1_7_R2.WorldServer;
+import net.minecraft.server.v1_7_R3.EntityPlayer;
+import net.minecraft.server.v1_7_R3.PlayerInteractManager;
+import net.minecraft.server.v1_7_R3.PlayerList;
+import net.minecraft.server.v1_7_R3.WorldServer;
 import net.minecraft.util.com.google.common.base.Charsets;
 import net.minecraft.util.com.mojang.authlib.GameProfile;
 
-import org.bukkit.craftbukkit.v1_7_R2.CraftServer;
-import org.bukkit.craftbukkit.v1_7_R2.CraftWorld;
+import org.bukkit.craftbukkit.v1_7_R3.CraftServer;
+import org.bukkit.craftbukkit.v1_7_R3.CraftWorld;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -39,7 +39,13 @@ public class DummyPlayers extends JavaPlugin implements Listener {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String commandLabel, String[] args) {
-        if (command.getName().equalsIgnoreCase("spawnbot")) {
+        if(commandLabel.equalsIgnoreCase("dplayers")){
+            if(args.length == 0){
+                sender.sendMessage(ChatColor.DARK_GRAY + "["+ChatColor.GREEN+"DummyPlayers"+ChatColor.DARK_GRAY);
+            }
+        }
+
+        /*if (command.getName().equalsIgnoreCase("spawnbot")) {
             int range = 2000;
             int num = 1;
             if (args.length > 0) {
@@ -55,7 +61,7 @@ public class DummyPlayers extends JavaPlugin implements Listener {
                 WorldServer world = ((CraftWorld) Bukkit.getWorlds().get(0)).getHandle();
                 PlayerList playerList = ((CraftServer) Bukkit.getServer()).getHandle();
                 UUID uuid = UUID.nameUUIDFromBytes(("OfflinePlayer:" + name).getBytes(Charsets.UTF_8));
-                GameProfile gameProfile = new GameProfile(uuid.toString().replaceAll("-", ""), name);
+                GameProfile gameProfile = new GameProfile(uuid, name);
 
                 EntityPlayer entityplayer = new EntityPlayer(playerList.getServer(), world, gameProfile, new PlayerInteractManager(world));
                 new DummyConnection(playerList.getServer(), new DummyNetwork(), entityplayer);
@@ -96,7 +102,7 @@ public class DummyPlayers extends JavaPlugin implements Listener {
             tps = tps / tpsCheck.history.size();
 
             sender.sendMessage("TPS: " + tps + " Loaded chunks: " + Bukkit.getWorlds().get(0).getLoadedChunks().length + " Entities: " + Bukkit.getWorlds().get(0).getEntities().size());
-        }
+        }*/
         return false;
     }
 }
