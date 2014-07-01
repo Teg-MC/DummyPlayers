@@ -42,26 +42,26 @@ public class DummyPlayers extends JavaPlugin implements Listener {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String commandLabel, String[] args) {
-        String prefix = (ChatColor.DARK_GRAY + "["+ChatColor.GREEN+"DummyPlayers"+ChatColor.DARK_GRAY + "] " + ChatColor.GRAY);
-        if(commandLabel.equalsIgnoreCase("dplayers")){
+        String prefix = (ChatColor.DARK_GRAY + "["+ChatColor.YELLOW+"DummyPlayers"+ChatColor.DARK_GRAY + "] " + ChatColor.GRAY);
+        if(commandLabel.equalsIgnoreCase("dp")){
             if(args.length == 0){
-                sender.sendMessage(ChatColor.DARK_GRAY + "["+ChatColor.GREEN+"DummyPlayers"+ChatColor.DARK_GRAY + "]" + ChatColor.GRAY+":");
-                sender.sendMessage(ChatColor.GREEN+"/dplayers spawn [name] [amount] [location] "+ChatColor.GRAY+"- Spawn dummy players. Words enclosed in [] are optional");
-                sender.sendMessage(ChatColor.GREEN+"/dplayers kill <all|name> "+ChatColor.GRAY+"- Kill all dummy players or a specific one.");
-                sender.sendMessage(ChatColor.GREEN+"/dplayers setSkin <all|name> <skin> "+ChatColor.GRAY+"- Set the skin of all dummy players or a specified one");
-                sender.sendMessage(ChatColor.GREEN+"/dplayers command <all|name> <command> "+ChatColor.GRAY+"- Execute a command as a dummy player.");
-                sender.sendMessage(ChatColor.GREEN+"/dplayers chat <all|name> <chat> "+ChatColor.GRAY+"- Chat as a dummy player");
+                sender.sendMessage(ChatColor.DARK_GRAY + "["+ChatColor.YELLOW+"DummyPlayers"+ChatColor.DARK_GRAY + "]" + ChatColor.GRAY+":");
+                sender.sendMessage(ChatColor.YELLOW+"/dp spawn [name] [amount] [location] "+ChatColor.GRAY+"- Spawn dummy players.");
+                sender.sendMessage(ChatColor.YELLOW+"/dp kill <all|name> "+ChatColor.GRAY+"- Kill dummy players");
+                sender.sendMessage(ChatColor.YELLOW+"/dp setSkin <all|name> <skin> "+ChatColor.GRAY+"- Set the skin of dummy players");
+                sender.sendMessage(ChatColor.YELLOW+"/dp command <all|name> <command> "+ChatColor.GRAY+"- Execute a command as a dummy player.");
+                sender.sendMessage(ChatColor.YELLOW+"/dp chat <all|name> <chat> "+ChatColor.GRAY+"- Chat as a dummy player");
             }
             else if (args.length == 1){
                 if(args[0].equalsIgnoreCase("spawn")) {
                     if (sender instanceof Player) {
                         Player p = (Player) sender;
                         Random random = new Random();
-                        String name = ChatColor.GREEN + "Dummy" + random.nextInt(1000) + 1;
+                        String name = ChatColor.YELLOW + "Dummy" + random.nextInt(1000) + 1;
                         WorldServer world = ((CraftWorld) Bukkit.getWorlds().get(0)).getHandle();
                         PlayerList playerList = ((CraftServer) Bukkit.getServer()).getHandle();
                         UUID uuid = UUID.nameUUIDFromBytes(("OfflinePlayer:" + name).getBytes(Charsets.UTF_8));
-                        GameProfile gameProfile = new GameProfile(uuid, name);
+                        GameProfile gameProfile = new GameProfile(UUID.fromString(uuid.toString().replaceAll("-", "")), name);
 
                         EntityPlayer entityPlayer = new EntityPlayer(playerList.getServer(), world, gameProfile, new PlayerInteractManager(world));
                         new DummyConnection(playerList.getServer(), new DummyNetwork(), entityPlayer);
