@@ -4,7 +4,7 @@ description: ${project.description}
 author: xTDKx
 main: me.xTDKx.DP.DummyPlayers
 commands:
-  dplayers:
+  dp:
     description: Spawn a fake player at a random location
     usage: /<command> [count] [radius]
     permission: playersimulator.spawn
