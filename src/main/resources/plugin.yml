@@ -2,7 +2,7 @@ name: DummyPlayers
 version: ${project.version}
 description: ${project.description}
 author: xTDKx
-main: me.xTDKx.DP.PlayerSimulator
+main: me.xTDKx.DP.DummyPlayers
 commands:
   dplayers:
     description: Spawn a fake player at a random location
