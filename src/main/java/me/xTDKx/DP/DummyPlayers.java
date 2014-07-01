@@ -14,17 +14,20 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 
 public class DummyPlayers extends JavaPlugin implements Listener {
     private TPSCheck tpsCheck = new TPSCheck();
-    private boolean toggle = false;
+    public Set<String> dummies = new HashSet<String>();
 
     @Override
     public void onEnable() {
@@ -42,12 +45,42 @@ public class DummyPlayers extends JavaPlugin implements Listener {
         String prefix = (ChatColor.DARK_GRAY + "["+ChatColor.GREEN+"DummyPlayers"+ChatColor.DARK_GRAY + "] " + ChatColor.GRAY);
         if(commandLabel.equalsIgnoreCase("dplayers")){
             if(args.length == 0){
-                sender.sendMessage(prefix+":");
+                sender.sendMessage(ChatColor.DARK_GRAY + "["+ChatColor.GREEN+"DummyPlayers"+ChatColor.DARK_GRAY + "]" + ChatColor.GRAY+":");
                 sender.sendMessage(ChatColor.GREEN+"/dplayers spawn [name] [amount] [location] "+ChatColor.GRAY+"- Spawn dummy players. Words enclosed in [] are optional");
                 sender.sendMessage(ChatColor.GREEN+"/dplayers kill <all|name> "+ChatColor.GRAY+"- Kill all dummy players or a specific one.");
                 sender.sendMessage(ChatColor.GREEN+"/dplayers setSkin <all|name> <skin> "+ChatColor.GRAY+"- Set the skin of all dummy players or a specified one");
                 sender.sendMessage(ChatColor.GREEN+"/dplayers command <all|name> <command> "+ChatColor.GRAY+"- Execute a command as a dummy player.");
                 sender.sendMessage(ChatColor.GREEN+"/dplayers chat <all|name> <chat> "+ChatColor.GRAY+"- Chat as a dummy player");
+            }
+            else if (args.length == 1){
+                if(args[0].equalsIgnoreCase("spawn")) {
+                    if (sender instanceof Player) {
+                        Player p = (Player) sender;
+                        Random random = new Random();
+                        String name = ChatColor.GREEN + "Dummy" + random.nextInt(1000) + 1;
+                        WorldServer world = ((CraftWorld) Bukkit.getWorlds().get(0)).getHandle();
+                        PlayerList playerList = ((CraftServer) Bukkit.getServer()).getHandle();
+                        UUID uuid = UUID.nameUUIDFromBytes(("OfflinePlayer:" + name).getBytes(Charsets.UTF_8));
+                        GameProfile gameProfile = new GameProfile(uuid, name);
+
+                        EntityPlayer entityPlayer = new EntityPlayer(playerList.getServer(), world, gameProfile, new PlayerInteractManager(world));
+                        new DummyConnection(playerList.getServer(), new DummyNetwork(), entityPlayer);
+
+                        entityPlayer.spawnIn(world);
+                        entityPlayer.playerInteractManager.a((WorldServer) entityPlayer.world);
+                        entityPlayer.playerInteractManager.b(world.getWorldData().getGameType());
+
+                        entityPlayer.setPosition(p.getLocation().getX(), p.getLocation().getY(), p.getLocation().getZ());
+                        playerList.players.add(entityPlayer);
+                        world.addEntity(entityPlayer);
+                        playerList.a(entityPlayer, null);
+                        dummies.add(name);
+
+                        p.sendMessage(prefix+"Dummy player "+name+ChatColor.GRAY+" spawned at your location.");
+                    }else{
+                        sender.sendMessage(prefix+"Only players can use this command.");
+                    }
+                }
             }
         }
 
